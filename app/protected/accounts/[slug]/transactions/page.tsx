@@ -83,10 +83,7 @@ export default function TransactionsPage() {
       </div>
 
       <div className="mt-6">
-        <TransactionsTable
-          data={transactions || []}
-          categories={categories || []}
-        />
+        <TransactionsTable />
       </div>
     </div>
   );
