@@ -51,16 +51,13 @@ const formSchema = z.object({
 
 export function AccountsModal({ accountId, type, initialData, onComplete }: Props) {
   const { toast } = useToast();
-  // console.log("accountId", accountId, "initialData", initialData);
   // console.log(form.getValues());
-  const activeCurrency = currenciesOption.find((c) => c.value === initialData?.currency);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: initialData?.name || "",
       description: initialData?.description || "",
-      // currency: activeCurrency || { label: "", value: "" },
       currency: initialData?.currency || "",
       account_type: initialData?.account_type || "bank",
       amount_limit: initialData?.amount_limit || 0,
@@ -111,7 +108,7 @@ export function AccountsModal({ accountId, type, initialData, onComplete }: Prop
         sonnerToast.success("Account updated successfully");
       }
 
-      // onComplete?.();
+      onComplete?.();
     } catch (error: any) {
       console.log("error", error);
       // toast.error("Something went wrong" + error?.message);
@@ -121,7 +118,6 @@ export function AccountsModal({ accountId, type, initialData, onComplete }: Prop
         description: error?.message || "There was a problem with your request.",
         action: <ToastAction altText="Try again">Try again</ToastAction>,
       });
-      // console.error(error);
     } finally {
       setLoading(false);
     }

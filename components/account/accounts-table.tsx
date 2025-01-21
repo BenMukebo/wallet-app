@@ -6,6 +6,7 @@ import { Account } from '@/types/schema'
 import { Button } from '../ui/button'
 import { AlertDialog, AlertDialogContent, AlertDialogTrigger } from '../ui/alert-dialog'
 import { AccountsModal } from './accounts-modal'
+import { PlusCircle } from 'lucide-react'
 
 interface Props {
   data: Account[]
@@ -25,10 +26,10 @@ const AccountsTable = ({ data }: Props) => {
       <div className="flex justify-end mb-4">
         <AlertDialog open={isModalOpen} onOpenChange={setIsModalOpen}>
           <AlertDialogTrigger asChild>
-            <Button variant="outline"
-             onClick={() => setIsModalOpen(true)}
-             
-            >New Account</Button>
+            <Button variant="default"  onClick={() => setIsModalOpen(true)}>
+              <PlusCircle size={20} className="mr-2" />
+              New Account
+            </Button>
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AccountsModal 
