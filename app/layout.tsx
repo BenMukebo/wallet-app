@@ -6,7 +6,9 @@ import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import Link from "next/link";
 import { Toaster } from "@/components/ui/toaster";
+import { Toaster as SonnerToaster } from "sonner";
 import { Footer } from "@/components/layout/footer";
+import SwrProvider from "@/components/swr-provider";
 
 import "./globals.css";
 
@@ -35,28 +37,34 @@ export default function RootLayout({
       <body className="bg-background text-foreground">
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >
-          <main className="min-h-screen flex flex-col items-center">
-            <div className="flex-1 w-full flex flex-col gap-20 items-center">
-              <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
-                <div className="w-full max-w-5xl flex justify-between items-center p-3 px-5 text-sm">
-                  <div className="flex gap-5 items-center font-semibold">
-                    <Link href={"/"}>Wallet Web Application</Link>
+          <SwrProvider>
+            <main className="min-h-screen flex flex-col items-center">
+              <div className="flex-1 w-full flex flex-col gap-20 items-center">
+                <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
+                  <div className="w-full max-w-5xl flex justify-between items-center p-3 px-5 text-sm">
+                    <div className="flex gap-5 items-center font-semibold">
+                      <Link href={"/"}>Wallet Web Application</Link>
+                    </div>
+                    <ThemeSwitcher />
+                    <div className="flex gap-5 items-center">
+                      {!hasEnvVars ? <EnvVarWarning /> : <HeaderAuth />}
+                    </div>
                   </div>
-                  {!hasEnvVars ? <EnvVarWarning /> : <HeaderAuth />}
+                </nav>
+                <div className="flex flex-col gap-20 max-w-5xl p-5">
+                  {children}
                 </div>
-              </nav>
-              <div className="flex flex-col gap-20 max-w-5xl p-5">
-                {children}
+                <Footer />
               </div>
-              <Footer />
-            </div>
-          </main>
+            </main>
+            <Toaster />
+            <SonnerToaster />
+          </SwrProvider>
         </ThemeProvider>
-        <Toaster />
       </body>
     </html>
   );
