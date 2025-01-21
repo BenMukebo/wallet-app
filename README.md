@@ -1,104 +1,145 @@
-<a href="https://demo-nextjs-with-supabase.vercel.app/">
-  <img alt="Next.js and Supabase Starter Kit - the fastest way to build apps with Next.js and Supabase" src="https://demo-nextjs-with-supabase.vercel.app/opengraph-image.png">
-  <h1 align="center">Next.js and Supabase Starter Kit</h1>
-</a>
+# Wallet Web Application
 
-<p align="center">
- The fastest way to build apps with Next.js and Supabase
-</p>
+<div align="center">
+  <h1>Personal Finance Management Application</h1>
+  <p>Track expenses, monitor budgets, and visualize spending patterns across multiple accounts.</p>
 
-<p align="center">
-  <a href="#features"><strong>Features</strong></a> ·
-  <a href="#demo"><strong>Demo</strong></a> ·
-  <a href="#deploy-to-vercel"><strong>Deploy to Vercel</strong></a> ·
-  <a href="#clone-and-run-locally"><strong>Clone and run locally</strong></a> ·
-  <a href="#feedback-and-issues"><strong>Feedback and issues</strong></a>
-  <a href="#more-supabase-examples"><strong>More Examples</strong></a>
-</p>
-<br/>
+  <a href="https://wallet-app-pro.vercel.app/">Live Demo</a>
+</div>
 
-## Features
+## Overview
 
-- Works across the entire [Next.js](https://nextjs.org) stack
-  - App Router
-  - Pages Router
-  - Middleware
-  - Client
-  - Server
-  - It just works!
-- supabase-ssr. A package to configure Supabase Auth to use cookies
-- Styling with [Tailwind CSS](https://tailwindcss.com)
-- Components with [shadcn/ui](https://ui.shadcn.com/)
-- Optional deployment with [Supabase Vercel Integration and Vercel deploy](#deploy-your-own)
-  - Environment variables automatically assigned to Vercel project
+*Track multiple accounts in one place*
 
-## Demo
+![alt text](image.png)
 
-You can view a fully working demo at [demo-nextjs-with-supabase.vercel.app](https://demo-nextjs-with-supabase.vercel.app/).
+*Manage and categorize your transactions*
 
-## Deploy to Vercel
+![alt text](image-1.png)
 
-Vercel deployment will guide you through creating a Supabase account and project.
+## Demo Access
 
-After installation of the Supabase integration, all relevant environment variables will be assigned to the project so the deployment is fully functioning.
+Try out the application using these demo credentials:
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&project-name=nextjs-with-supabase&repository-name=nextjs-with-supabase&demo-title=nextjs-with-supabase&demo-description=This+starter+configures+Supabase+Auth+to+use+cookies%2C+making+the+user%27s+session+available+throughout+the+entire+Next.js+app+-+Client+Components%2C+Server+Components%2C+Route+Handlers%2C+Server+Actions+and+Middleware.&demo-url=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2F&external-id=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&demo-image=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2Fopengraph-image.png)
+```bash
+Email: eric.test@gmail.com
+Password: 123
+```
 
-The above will also clone the Starter kit to your GitHub, you can clone that locally and develop locally.
+**Note:** This is a demo account with sample data. For security reasons, please use your own credentials in production.
 
-If you wish to just develop locally and not deploy to Vercel, [follow the steps below](#clone-and-run-locally).
+## Key Features
 
-## Clone and run locally
+- 📊 **Multi-Account Management** - Track bank, mobile money, and cash accounts
+- 📈 **Dynamic Reports** - Generate custom reports for any time period
+- 💰 **Budget Tracking** - Set and monitor spending limits
+- 🏷️ **Smart Categorization** - Organize transactions with categories and subcategories
+- 📱 **Responsive Design** - Works seamlessly on desktop and mobile
+- 📊 **Visual Analytics** - Beautiful charts and spending breakdowns
 
-1. You'll first need a Supabase project which can be made [via the Supabase dashboard](https://database.new)
+## Tech Stack
 
-2. Create a Next.js app using the Supabase Starter template npx command
+- **Framework:** Next.js 14, React
+- **Styling:** Tailwind CSS
+- **Database:** PostgreSQL
+- **Authentication:** NextAuth.js
+- **Deployment:** Vercel
 
-   ```bash
-   npx create-next-app --example with-supabase with-supabase-app
-   ```
+## Database Schema
 
-   ```bash
-   yarn create next-app --example with-supabase with-supabase-app
-   ```
+### Users
+```sql
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(150) UNIQUE NOT NULL,
+    password_hash TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
+);
+```
 
-   ```bash
-   pnpm create next-app --example with-supabase with-supabase-app
-   ```
+### Accounts
+```sql
+CREATE TABLE accounts (
+    id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users(id) ON DELETE CASCADE,
+    name VARCHAR(100) NOT NULL,
+    balance DECIMAL(15, 2) DEFAULT 0.00,
+    account_type VARCHAR(50),
+    amount_limit DECIMAL(15, 2) NOT NULL,
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
+);
+```
 
-3. Use `cd` to change into the app's directory
+### Categories
+```sql
+CREATE TABLE categories (
+    id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users(id) ON DELETE CASCADE,
+    name VARCHAR(100) NOT NULL,
+    parent_id INT REFERENCES categories(id) ON DELETE SET NULL,
+    user_id INT REFERENCES users(id) ON DELETE SET NULL,
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
+);
+```
 
-   ```bash
-   cd with-supabase-app
-   ```
+### Transactions
+```sql
+CREATE TABLE transactions (
+    id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users(id) ON DELETE CASCADE,
+    account_id INT REFERENCES accounts(id) ON DELETE CASCADE,
+    category_id INT REFERENCES categories(id) ON DELETE SET NULL,
+    amount DECIMAL(15, 2) NOT NULL,
+    transaction_date TIMESTAMP DEFAULT NOW(),
+    description TEXT,
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
+);
+```
 
-4. Rename `.env.example` to `.env.local` and update the following:
+## Quick Start
 
-   ```
-   NEXT_PUBLIC_SUPABASE_URL=[INSERT SUPABASE PROJECT URL]
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=[INSERT SUPABASE PROJECT API ANON KEY]
-   ```
+1. Clone the repository
+```bash
+git clone [REPO_URL]
+```
 
-   Both `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` can be found in [your Supabase project's API settings](https://app.supabase.com/project/_/settings/api)
+2. Install dependencies
+```bash
+npm install
+```
 
-5. You can now run the Next.js local development server:
+3. Configure environment variables
+```bash
+cp .env.example .env.local
+```
 
-   ```bash
-   npm run dev
-   ```
+4. Start the development server
+```bash
+npm run dev
+```
 
-   The starter kit should now be running on [localhost:3000](http://localhost:3000/).
+## Live Demo
 
-6. This template comes with the default shadcn/ui style initialized. If you instead want other ui.shadcn styles, delete `components.json` and [re-install shadcn/ui](https://ui.shadcn.com/docs/installation/next)
+Check out the live demo at [DEPLOYMENT_URL]
 
-> Check out [the docs for Local Development](https://supabase.com/docs/guides/getting-started/local-development) to also run Supabase locally.
+## Contributing
 
-## Feedback and issues
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-Please file feedback and issues over on the [Supabase GitHub org](https://github.com/supabase/supabase/issues/new/choose).
+## License
 
-## More Supabase examples
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-- [Next.js Subscription Payments Starter](https://github.com/vercel/nextjs-subscription-payments)
-- [Cookie-based Auth and the Next.js 13 App Router (free course)](https://youtube.com/playlist?list=PL5S4mPUpp4OtMhpnp93EFSo42iQ40XjbF)
-- [Supabase Auth and the Next.js App Router](https://github.com/supabase/supabase/tree/master/examples/auth/nextjs)
+## Acknowledgments
+
+- Thanks to Code of Africa GmbH for the project requirements
+- Built with [Next.js](https://nextjs.org/)
+- Hosted on [Vercel](https://vercel.com)
