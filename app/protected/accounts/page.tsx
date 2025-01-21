@@ -7,18 +7,18 @@ const AccountsPage = async () => {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
-  const [accountsData, categoriesData] = await Promise.all([
-    supabase.from('accounts').select('*').eq('user_id', user?.id),
-    supabase.from('categories').select('*').eq('user_id', user?.id)
-  ]);
+  // const [accountsData, categoriesData] = await Promise.all([
+  //   supabase.from('accounts').select('*').eq('user_id', user?.id),
+  //   supabase.from('categories').select('*').eq('user_id', user?.id)
+  // ]);
 
+  const { data: accountsData } = await supabase.from('accounts').select('*').eq('user_id', user?.id);
 
-  const totalBalance = accountsData.data?.reduce((acc, account) => acc + account.balance, 0) || 0;
+  const totalBalance = accountsData?.reduce((acc, account) => acc + account.balance, 0) || 0;
   // const currency = accountsData.data?.[0]?.currency || 'USD';
 
-
   return (
-    <div className="container mx-auto py-10">
+    <div className="mx-auto py-10">
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -35,7 +35,7 @@ const AccountsPage = async () => {
         </Card>
       </div>
 
-      <AccountsTable data={accountsData.data || []} />
+      <AccountsTable data={accountsData || []} />
     </div>
   )
 }

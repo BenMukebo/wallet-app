@@ -1,4 +1,4 @@
-import { signOutAction } from "@/app/actions";
+import { signOutAction } from "@/actions/auth";
 import { hasEnvVars } from "@/utils/supabase/check-env-vars";
 import Link from "next/link";
 import { createClient } from "@/utils/supabase/server";
@@ -11,13 +11,15 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
 import { User, Settings, LogOut, Wallet } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 export default async function AuthButton() {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   if (!hasEnvVars) {
     return (
@@ -38,10 +40,11 @@ export default async function AuthButton() {
   }
 
   if (user) {
-    const userInitial = user.email?.[0].toUpperCase() || 'U';
-    
+    const userInitial = user.email?.[0].toUpperCase() || "U";
+
     return (
       <DropdownMenu>
+        <p className="">welcome {user?.email}</p>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="relative h-9 w-9 rounded-full">
             <Avatar>
@@ -71,17 +74,14 @@ export default async function AuthButton() {
               Profile
             </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem asChild>
+          <DropdownMenuItem asChild disabled>
             <Link href="/protected/settings" className="cursor-pointer">
               <Settings className="mr-2 h-4 w-4" />
               Settings
             </Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem 
-            asChild
-            className="text-red-600 focus:text-red-600"
-          >
+          <DropdownMenuItem asChild className="text-red-600 focus:text-red-600">
             <form action={signOutAction} className="w-full">
               <button type="submit" className="flex w-full items-center">
                 <LogOut className="mr-2 h-4 w-4" />
