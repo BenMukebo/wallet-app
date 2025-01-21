@@ -2,6 +2,7 @@ import React from 'react';
 import { createClient } from "@/utils/supabase/server";
 import AccountsTable from '@/components/account/accounts-table';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useAccounts } from '@/lib/hooks';
 
 const AccountsPage = async () => {
   const supabase = await createClient();
@@ -13,9 +14,7 @@ const AccountsPage = async () => {
   // ]);
 
   const { data: accountsData } = await supabase.from('accounts').select('*').eq('user_id', user?.id);
-
   const totalBalance = accountsData?.reduce((acc, account) => acc + account.balance, 0) || 0;
-  // const currency = accountsData.data?.[0]?.currency || 'USD';
 
   return (
     <div className="mx-auto py-10">
@@ -35,7 +34,7 @@ const AccountsPage = async () => {
         </Card>
       </div>
 
-      <AccountsTable data={accountsData || []} />
+      <AccountsTable userId={user?.id!} data={accountsData || []} />
     </div>
   )
 }

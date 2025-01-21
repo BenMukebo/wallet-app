@@ -8,14 +8,13 @@ import { toast as sonnerToast } from "sonner";
 import { useToast } from "@/hooks/use-toast";
 
 import {
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -124,16 +123,16 @@ export function AccountsModal({ accountId, type, initialData, onComplete }: Prop
   }
 
   return (
-    <AlertDialogContent className="w-[550px]">
-      <AlertDialogHeader className="">
-        <AlertDialogTitle className="text-2xl font-bold text-center mb-2">
+    <DialogContent className="w-[550px]">
+      <DialogHeader className="">
+        <DialogTitle className="text-2xl font-bold text-center mb-2">
           {type === "new" ? "Create a new account" : "Update account"}
-        </AlertDialogTitle>
-        <AlertDialogDescription className="text-sm text-muted-foreground mb-2">
+        </DialogTitle>
+        <DialogDescription className="text-sm text-muted-foreground mb-2">
           This is a modal to update or create a new account. You can set the account name,
           description, type and budget limit.
-        </AlertDialogDescription>
-      </AlertDialogHeader>
+        </DialogDescription>
+      </DialogHeader>
 
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className="mb-6">
@@ -216,13 +215,13 @@ export function AccountsModal({ accountId, type, initialData, onComplete }: Prop
               </Label>
             </div>
           </div>        </div>
-        <AlertDialogFooter className="w-full flex align-center justify-between gap-3">
-          <AlertDialogCancel className="">Cancel</AlertDialogCancel>
+        <DialogFooter className="w-full flex align-center justify-between gap-3">
+          <Button variant="outline" onClick={onComplete}>Cancel</Button>
           <Button type="submit" disabled={loading} className="min-w-24">
             {loading ? "Processing..." : "Save"}
           </Button>
-        </AlertDialogFooter>
+        </DialogFooter>
       </form>
-    </AlertDialogContent>
+    </DialogContent>
   );
 }

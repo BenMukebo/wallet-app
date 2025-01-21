@@ -44,7 +44,7 @@ export default async function AuthButton() {
 
     return (
       <DropdownMenu>
-        <p className="">welcome {user?.email}</p>
+        <p className="text-base">Welcome <span className="font-semibold">{user?.email}</span></p>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="relative h-9 w-9 rounded-full">
             <Avatar>

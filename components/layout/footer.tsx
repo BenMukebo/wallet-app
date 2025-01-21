@@ -1,17 +1,16 @@
 import { ThemeSwitcher } from "@/components/theme-switcher"
 import { Button } from "@/components/ui/button"
-import { Separator } from "@/components/ui/separator"
-import { Github, Linkedin, Twitter } from "lucide-react"
+import { Github, HandCoins, Linkedin, Twitter } from "lucide-react"
 import Link from "next/link"
 
 export function Footer() {
   return (
-    <footer className="border-t py-12 md:py-16">
-      <div className="container flex flex-col items-center justify-between gap-8 md:flex-row">
+    <footer className="w-5/6 max-w-5xl border-t py-12 md:py-16">
+      <div className="flex flex-col items-center justify-between gap-8 md:flex-row">
         <div className="flex flex-col items-center gap-4 md:items-start">
           <div className="text-sm">
-            <div className="flex items-center gap-2">
-              <p className="font-semibold">Wallet Web App</p>
+            <div className="flex items-center gap-2 mb-1">
+              <p className="flex gap-1 text-lg font-semibold"><HandCoins className="text-green-500"/> Wallet Web App</p>
               <span className="text-muted-foreground">v1.0.0</span>
             </div>
             <p className="text-muted-foreground">

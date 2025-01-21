@@ -9,9 +9,6 @@ import {
   Shield,
   Globe,
 } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
 
 export default async function Home() {
   const supabase = await createClient();
@@ -20,16 +17,15 @@ export default async function Home() {
   } = await supabase.auth.getUser();
 
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-b from-zinc-100 to-white dark:from-zinc-900 dark:to-zinc-800">
+    <div className="flex flex-col min-h-screen bg-gradient-to-b from-zinc-100 to-white dark:from-black dark:to-zinc-900">
       <main className="flex-1">
-        {/* Hero Section */}
         <section className="w-full py-24 md:py-32">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center space-y-10 text-center">
               <div className="max-w-3xl space-y-6">
                 <h1 className="text-4xl font-bold tracking-tight sm:text-6xl md:text-7xl">
                   Smart Money Management
-                  <span className="text-blue-500">.</span>
+                  <span className="text-green-500">.</span>
                 </h1>
                 <p className="mx-auto max-w-[700px] text-zinc-500 md:text-xl dark:text-zinc-400">
                   Take control of your finances with our intuitive wallet
@@ -83,7 +79,7 @@ export default async function Home() {
                     className="relative overflow-hidden rounded-2xl border border-zinc-200 bg-white p-8 shadow-sm transition-shadow hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900"
                   >
                     <div className="flex items-center gap-4">
-                      <div className="rounded-lg bg-blue-500/10 p-3 text-blue-500">
+                      <div className="rounded-lg bg-blue-500/10 p-3 text-green-500">
                         {feature.icon}
                       </div>
                       <h3 className="font-semibold">{feature.title}</h3>
@@ -116,7 +112,7 @@ export default async function Home() {
                     key={i}
                     className="flex items-start gap-4 rounded-lg p-4"
                   >
-                    <div className="rounded-lg bg-blue-500/10 p-2 text-blue-500">
+                    <div className="rounded-lg bg-blue-500/10 p-2 text-green-500">
                       {benefit.icon}
                     </div>
                     <div>
